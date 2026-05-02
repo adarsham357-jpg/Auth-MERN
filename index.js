@@ -1,17 +1,13 @@
+const mongoose = require('mongoose');
 
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('dotenv').config();
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URI);
+        console.log("MongoDB Connected");
+    } catch (error) {
+        console.error(error.message);
+        process.exit(1);
+    }
+};
 
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-
-connectDB();
-
-app.use('/api/users', require('./routes/UserRoutes'));
-
-app.listen(5000, () => {
-    console.log('server is running on http://localhost:5000');
-});
+module.exports = connectDB;
